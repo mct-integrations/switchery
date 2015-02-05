@@ -1296,6 +1296,24 @@ Switchery.prototype.create = function() {
   this.jack = document.createElement('small');
   this.switcher.appendChild(this.jack);
   this.switcher.className = this.options.className;
+  if (this.options.checkedText) {
+  	this.checkedText = document.createElement('span');
+  	this.checkedText.className = "text checked-text";
+  	this.checkedText.innerHTML = this.options.checkedText;
+  	this.switcher.appendChild(this.checkedText);
+  	if (! this.element.checked) {
+      	this.checkedText.style.display = "none";
+  	}
+  }
+  if (this.options.uncheckedText) {
+  	this.uncheckedText = document.createElement('span');
+  	this.uncheckedText.className = "text unchecked-text";
+  	this.uncheckedText.innerHTML = this.options.uncheckedText;
+  	this.switcher.appendChild(this.uncheckedText);
+  	if (this.element.checked) {
+      	this.uncheckedText.style.display = "none";
+  	}
+  }
 
   return this.switcher;
 };
@@ -1344,21 +1362,22 @@ Switchery.prototype.isDisabled = function() {
 Switchery.prototype.setPosition = function (clicked) {
   var checked = this.isChecked()
     , switcher = this.switcher
-    , jack = this.jack;
+    , jack = this.jack
+    , position;
 
   if (clicked && checked) checked = false;
   else if (clicked && !checked) checked = true;
 
   if (checked === true) {
     this.element.checked = true;
-
-    if (window.getComputedStyle) jack.style.left = parseInt(window.getComputedStyle(switcher).width) - parseInt(window.getComputedStyle(jack).width) + 'px';
+    position = this.options.size == 'large' ? parseInt(window.getComputedStyle(switcher).width) - parseInt(window.getComputedStyle(jack).width) - 5 + 'px' : parseInt(window.getComputedStyle(switcher).width) - parseInt(window.getComputedStyle(jack).width) + 'px';
+    if (window.getComputedStyle) jack.style.left = position;
     else jack.style.left = parseInt(switcher.currentStyle['width']) - parseInt(jack.currentStyle['width']) + 'px';
 
     if (this.options.color) this.colorize();
     this.setSpeed();
   } else {
-    jack.style.left = 0;
+    jack.style.left = this.options.size == 'large' ? '5px' : 0;
     this.element.checked = false;
     this.switcher.style.boxShadow = 'inset 0 0 0 0 ' + this.options.secondaryColor;
     this.switcher.style.borderColor = this.options.secondaryColor;
@@ -1366,6 +1385,30 @@ Switchery.prototype.setPosition = function (clicked) {
     this.jack.style.backgroundColor = this.options.jackColor;
     this.setSpeed();
   }
+};
+
+/** 
+* Set the show/hide text, if they exist.
+*
+* @api private
+*/
+
+Switchery.prototype.showOrHideText = function() {
+    if (this.isChecked()) {
+        if (this.checkedText) {
+            this.checkedText.style.display = "inline";
+        }
+        if (this.uncheckedText) {
+            this.uncheckedText.style.display = "none";
+        }
+    } else {
+        if (this.checkedText) {
+            this.checkedText.style.display = "none";
+        }
+        if (this.uncheckedText) {
+            this.uncheckedText.style.display = "inline";
+        }
+    }
 };
 
 /**
@@ -1465,10 +1508,12 @@ Switchery.prototype.handleChange = function() {
   if (el.addEventListener) {
     el.addEventListener('change', function() {
       self.setPosition();
+      self.showOrHideText();
     });
   } else {
     el.attachEvent('onchange', function() {
       self.setPosition();
+      self.showOrHideText();
     });
   }
 };
