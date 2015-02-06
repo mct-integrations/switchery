@@ -4,9 +4,9 @@
     "dist/switchery.js",
     "dist/switchery.css"
   ],
-  "version": "0.7.0",
+  "version": "0.7.1",
   "homepage": "https://github.com/v3rron/switchery",
-  "author": [
+  "authors": [
     "Alexander Petkov <abpetkov@gmail.com> (https://github.com/abpetkov)",
     "Ronen Verdi <go7hic@gmail.com> (https://github.com/v3rron)"
   ],
