@@ -164,21 +164,22 @@ Switchery.prototype.isDisabled = function() {
 Switchery.prototype.setPosition = function (clicked) {
   var checked = this.isChecked()
     , switcher = this.switcher
-    , jack = this.jack;
+    , jack = this.jack
+    , position;
 
   if (clicked && checked) checked = false;
   else if (clicked && !checked) checked = true;
 
   if (checked === true) {
     this.element.checked = true;
-
-    if (window.getComputedStyle) jack.style.left = parseInt(window.getComputedStyle(switcher).width) - parseInt(window.getComputedStyle(jack).width) - 5 + 'px';
+    position = this.options.size == 'large' ? parseInt(window.getComputedStyle(switcher).width) - parseInt(window.getComputedStyle(jack).width) - 5 + 'px' : parseInt(window.getComputedStyle(switcher).width) - parseInt(window.getComputedStyle(jack).width) + 'px';
+    if (window.getComputedStyle) jack.style.left = position;
     else jack.style.left = parseInt(switcher.currentStyle['width']) - parseInt(jack.currentStyle['width']) + 'px';
 
     if (this.options.color) this.colorize();
     this.setSpeed();
   } else {
-    jack.style.left = '5px';
+    jack.style.left = this.options.size == 'large' ? '5px' : 0;
     this.element.checked = false;
     this.switcher.style.boxShadow = 'inset 0 0 0 0 ' + this.options.secondaryColor;
     this.switcher.style.borderColor = this.options.secondaryColor;
