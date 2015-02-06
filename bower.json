@@ -7,8 +7,7 @@
   "version": "0.7.1",
   "homepage": "https://github.com/v3rron/switchery",
   "authors": [
-    "Alexander Petkov <abpetkov@gmail.com> (https://github.com/abpetkov)",
-    "Ronen Verdi <go7hic@gmail.com> (https://github.com/v3rron)"
+    "Alexander Petkov <abpetkov@gmail.com> (https://github.com/abpetkov)"
   ],
   "description": "Component to create iOS 7 styled switches from default input checkboxes",
   "keywords": [
